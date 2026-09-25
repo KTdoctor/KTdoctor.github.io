@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>เกมเปิดแผ่นป้าย</title>
 
 <style>
@@ -16,82 +15,55 @@ body {
     min-height: 100vh;
     background: linear-gradient(135deg, #fff1c7, #ffc857);
     font-family: Arial, sans-serif;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     padding: 25px;
 }
 
 .container {
-    width: min(900px, 100%);
-
+    width: min(1000px, 100%);
     background: white;
-
     padding: 25px;
-
     border-radius: 25px;
-
-    box-shadow:
-        0 10px 35px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.2);
 }
 
 h1 {
     text-align: center;
-
     margin-top: 0;
     margin-bottom: 20px;
-
     font-size: 34px;
 }
 
-
 /* =========================
-   กระดาน 16 ช่อง
+   กระดาน 32 ช่อง (8 x 4)
 ========================= */
-
 .board {
-    width: min(700px, 100%);
-
-    aspect-ratio: 1 / 1;
-
+    width: 100%;
+    aspect-ratio: 2 / 1; /* อัตราส่วน 8 ต่อ 4 */
     margin: auto;
-
     display: grid;
-
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(4, 1fr);
-
-    gap: 5px;
-
+    gap: 4px;
     background: #111;
-
     padding: 5px;
-
     border-radius: 18px;
-
     overflow: hidden;
 }
-
 
 /* =========================
    ช่อง
 ========================= */
-
 .tile {
     position: relative;
-
     overflow: hidden;
-
     cursor: pointer;
-
     background: #333;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     transition: transform 0.15s;
 }
 
@@ -99,102 +71,60 @@ h1 {
     transform: scale(0.97);
 }
 
-
 /* =========================
    ส่วนของรูป
 ========================= */
-
 .image-part {
     position: absolute;
-
     inset: 0;
-
     background-repeat: no-repeat;
-
-    background-size: 400% 400%;
-
+    background-size: 800% 400%; /* แนวนอน 800%, แนวตั้ง 400% ตามจำนวนช่อง */
     z-index: 1;
 }
-
 
 /* =========================
    แผ่นป้ายด้านหน้า
 ========================= */
-
 .cover {
     position: absolute;
-
     inset: 0;
-
-    background:
-        linear-gradient(
-            135deg,
-            #222,
-            #444
-        );
-
+    background: linear-gradient(135deg, #222, #444);
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     color: white;
-
-    font-size: clamp(25px, 5vw, 50px);
-
+    font-size: clamp(14px, 2.5vw, 28px);
     font-weight: bold;
-
-    text-shadow:
-        2px 2px 5px rgba(0,0,0,0.6);
-
-    transition:
-        transform 0.45s ease,
-        opacity 0.45s ease;
-
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+    transition: transform 0.45s ease, opacity 0.45s ease;
     z-index: 2;
 }
 
-
 /* เปิดป้าย */
-
 .tile.open .cover {
     transform: scale(0);
-
     opacity: 0;
 }
-
 
 /* =========================
    ปุ่ม
 ========================= */
-
 .controls {
     display: flex;
-
     justify-content: center;
-
     flex-wrap: wrap;
-
     gap: 10px;
-
     margin: 20px 0;
 }
 
 button {
     border: none;
-
     border-radius: 12px;
-
     padding: 12px 20px;
-
     font-size: 16px;
-
     font-weight: bold;
-
     color: white;
-
     cursor: pointer;
-
     transition: 0.2s;
 }
 
@@ -202,32 +132,18 @@ button:hover {
     transform: scale(1.04);
 }
 
-.upload {
-    background: #6a4c93;
-}
-
-.random {
-    background: #e63946;
-}
-
-.reset {
-    background: #457b9d;
-}
-
+.upload { background: #6a4c93; }
+.random { background: #e63946; }
+.reset  { background: #457b9d; }
 
 /* =========================
    ส่วนเลือกรูป
 ========================= */
-
 .upload-area {
     text-align: center;
-
     background: #f4f4f4;
-
     padding: 18px;
-
     border-radius: 15px;
-
     margin-top: 20px;
 }
 
@@ -237,476 +153,170 @@ input[type="file"] {
 
 .preview {
     display: none;
-
     width: 150px;
     height: 150px;
-
     object-fit: cover;
-
     margin: 15px auto 0;
-
     border-radius: 12px;
 }
 
-
-/* =========================
-   มือถือ
-========================= */
-
 @media (max-width: 600px) {
-
-    body {
-        padding: 10px;
-    }
-
-    .container {
-        padding: 15px;
-    }
-
-    .board {
-        gap: 3px;
-
-        padding: 3px;
-    }
+    body { padding: 10px; }
+    .container { padding: 15px; }
+    .board { gap: 2px; padding: 3px; }
 }
 </style>
 </head>
 
-
 <body>
 
 <div class="container">
-
     <h1>🎮 เกมเปิดแผ่นป้าย 🎮</h1>
 
-
     <!-- กระดาน -->
-
-    <div
-        class="board"
-        id="board">
-    </div>
-
+    <div class="board" id="board"></div>
 
     <!-- ปุ่ม -->
-
     <div class="controls">
-
-        <button
-            class="upload"
-            onclick="
-                document
-                .getElementById('imageInput')
-                .click()
-            ">
-            🖼️ เลือกรูป
-        </button>
-
-
-        <button
-            class="random"
-            onclick="randomTile()">
-            🎲 สุ่มเปิด
-        </button>
-
-
-        <button
-            class="reset"
-            onclick="resetGame()">
-            🔄 รีเซ็ต
-        </button>
-
+        <button class="upload" onclick="document.getElementById('imageInput').click()">🖼️ เลือกรูป</button>
+        <button class="random" onclick="randomTile()">🎲 สุ่มเปิด</button>
+        <button class="reset" onclick="resetGame()">🔄 รีเซ็ต</button>
     </div>
-
 
     <!-- เลือกรูป -->
-
     <div class="upload-area">
-
-        <strong>
-            🖼️ เลือกรูปภาพสำหรับเกม
-        </strong>
-
+        <strong>🖼️ เลือกรูปภาพสำหรับเกม</strong>
         <br>
-
-        <input
-            type="file"
-            id="imageInput"
-            accept="image/*">
-
-
-        <img
-            id="preview"
-            class="preview">
-
+        <input type="file" id="imageInput" accept="image/*">
+        <img id="preview" class="preview">
     </div>
-
 </div>
 
-
-
 <script>
-
 /* =====================================
-   ตั้งค่า
+   ตั้งค่า (8 คอลัมน์ x 4 แถว = 32 ช่อง)
 ===================================== */
-
-const SIZE = 4;
-
-const TOTAL = SIZE * SIZE;
-
-
-/* รูปภาพ */
+const COLS = 8;
+const ROWS = 4;
+const TOTAL = COLS * ROWS; // 32
 
 let imageURL = null;
-
-
-/* สถานะช่อง */
-
 let opened = Array(TOTAL).fill(false);
-
-
 
 /* =====================================
    สร้างกระดาน
 ===================================== */
-
 function createBoard() {
-
-    const board =
-        document.getElementById("board");
-
-
+    const board = document.getElementById("board");
     board.innerHTML = "";
 
-
-    for (
-        let i = 0;
-        i < TOTAL;
-        i++
-    ) {
-
-
-        /* สร้างช่อง */
-
-        const tile =
-            document.createElement("div");
-
-
+    for (let i = 0; i < TOTAL; i++) {
+        const tile = document.createElement("div");
         tile.className = "tile";
 
-
-        /* ถ้าเปิดแล้ว */
-
         if (opened[i]) {
-
             tile.classList.add("open");
-
         }
 
+        const row = Math.floor(i / COLS);
+        const col = i % COLS;
 
-
-        /*
-            หาตำแหน่งแถว / คอลัมน์
-
-            1   2   3   4
-            5   6   7   8
-            9  10  11  12
-           13  14  15  16
-        */
-
-        const row =
-            Math.floor(i / SIZE);
-
-
-        const col =
-            i % SIZE;
-
-
-
-        /* =========================
-           รูปส่วนนี้
-        ========================= */
-
-        const imagePart =
-            document.createElement("div");
-
-
-        imagePart.className =
-            "image-part";
-
+        // รูปภาพย่อย
+        const imagePart = document.createElement("div");
+        imagePart.className = "image-part";
 
         if (imageURL) {
-
-            imagePart.style.backgroundImage =
-                `url("${imageURL}")`;
-
-
-            /*
-                ทำให้แต่ละช่องเห็น
-                คนละส่วนของรูปใหญ่
-            */
-
-            const x =
-                (col / (SIZE - 1)) * 100;
-
-
-            const y =
-                (row / (SIZE - 1)) * 100;
-
-
-            imagePart.style.backgroundPosition =
-                `${x}% ${y}%`;
-
+            imagePart.style.backgroundImage = `url("${imageURL}")`;
+            const x = (col / (COLS - 1)) * 100;
+            const y = (row / (ROWS - 1)) * 100;
+            imagePart.style.backgroundPosition = `${x}% ${y}%`;
         }
-
 
         tile.appendChild(imagePart);
 
-
-
-        /* =========================
-           แผ่นป้าย + ตัวเลข
-        ========================= */
-
-        const cover =
-            document.createElement("div");
-
-
+        // แผ่นป้ายตัวเลข (1 - 32)
+        const cover = document.createElement("div");
         cover.className = "cover";
-
-
-        /*
-            ตรงนี้คือเลข 1 - 16
-        */
-
         cover.textContent = i + 1;
-
 
         tile.appendChild(cover);
 
-
-
-        /* =========================
-           คลิกเปิด
-        ========================= */
-
         tile.onclick = function() {
-
             openTile(i);
-
         };
 
-
         board.appendChild(tile);
-
     }
-
 }
-
-
 
 /* =====================================
    เปิดช่อง
 ===================================== */
-
 function openTile(index) {
-
-    /* ถ้ายังไม่มีรูป */
-
     if (!imageURL) {
-
-        alert(
-            "กรุณาเลือกรูปก่อนครับ"
-        );
-
+        alert("กรุณาเลือกรูปก่อนครับ");
         return;
-
     }
-
-
     opened[index] = true;
-
-
     createBoard();
-
 }
-
-
 
 /* =====================================
    สุ่มเปิด
 ===================================== */
-
 function randomTile() {
-
     if (!imageURL) {
-
-        alert(
-            "กรุณาเลือกรูปก่อนครับ"
-        );
-
+        alert("กรุณาเลือกรูปก่อนครับ");
         return;
-
     }
-
 
     const closedTiles = [];
-
-
-    for (
-        let i = 0;
-        i < TOTAL;
-        i++
-    ) {
-
-        if (!opened[i]) {
-
-            closedTiles.push(i);
-
-        }
-
+    for (let i = 0; i < TOTAL; i++) {
+        if (!opened[i]) closedTiles.push(i);
     }
 
-
-    /* เปิดครบแล้ว */
-
-    if (
-        closedTiles.length === 0
-    ) {
-
-        alert(
-            "เปิดครบทั้ง 16 ช่องแล้ว!"
-        );
-
+    if (closedTiles.length === 0) {
+        alert("เปิดครบทั้ง 32 ช่องแล้ว!");
         return;
-
     }
 
-
-    /* สุ่ม */
-
-    const randomIndex =
-        closedTiles[
-            Math.floor(
-                Math.random()
-                *
-                closedTiles.length
-            )
-        ];
-
-
+    const randomIndex = closedTiles[Math.floor(Math.random() * closedTiles.length)];
     opened[randomIndex] = true;
-
-
     createBoard();
-
 }
-
-
 
 /* =====================================
    รีเซ็ต
 ===================================== */
-
 function resetGame() {
-
-    opened =
-        Array(TOTAL).fill(false);
-
-
+    opened = Array(TOTAL).fill(false);
     createBoard();
-
 }
-
-
 
 /* =====================================
    เลือกรูป
 ===================================== */
+document.getElementById("imageInput").addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
-document
-    .getElementById("imageInput")
-    .addEventListener(
-        "change",
-        function(event) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        imageURL = e.target.result;
 
+        const preview = document.getElementById("preview");
+        preview.src = imageURL;
+        preview.style.display = "block";
 
-            const file =
-                event.target.files[0];
+        opened = Array(TOTAL).fill(false);
+        createBoard();
+    };
 
+    reader.readAsDataURL(file);
+});
 
-            if (!file) return;
-
-
-
-            const reader =
-                new FileReader();
-
-
-
-            reader.onload =
-                function(e) {
-
-
-                    /*
-                        เก็บรูปใหญ่
-                    */
-
-                    imageURL =
-                        e.target.result;
-
-
-
-                    /*
-                        แสดง Preview
-                    */
-
-                    const preview =
-                        document
-                        .getElementById(
-                            "preview"
-                        );
-
-
-                    preview.src =
-                        imageURL;
-
-
-                    preview.style.display =
-                        "block";
-
-
-
-                    /*
-                        เริ่มเกมใหม่
-                    */
-
-                    opened =
-                        Array(TOTAL)
-                        .fill(false);
-
-
-
-                    createBoard();
-
-                };
-
-
-
-            reader.readAsDataURL(file);
-
-        }
-    );
-
-
-
-/* =====================================
-   เริ่มเกม
-===================================== */
-
+// เริ่มเกม
 createBoard();
-
 </script>
 
 </body>
